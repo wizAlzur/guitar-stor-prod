@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>История заказов | Six Strings Store</title>
+    <link rel="stylesheet" href="./src/styles/main.css" />
+  </head>
+  <body class="page page--orders">
+    <div class="page__shell">
+      <header class="header" data-shell="header"></header>
+
+      <main class="page__main">
+        <section class="orders">
+          <div class="container">
+            <div class="orders__intro">
+              <p class="section-label">Заказы</p>
+              <h1 class="section-title">История и статусы покупок</h1>
+              <p class="section-text">
+                Здесь пользователь видит все созданные заказы, их статусы оплаты и подробности по каждой покупке.
+                Это основной экран для проверки результата после оформления и возврата с оплаты.
+              </p>
+            </div>
+
+            <div class="orders__toolbar">
+              <div class="status-banner status-banner--accent" data-orders-summary-status>
+                Готовим историю заказов и определяем, какой заказ показать первым.
+              </div>
+              <div class="orders__actions">
+                <a class="button button--secondary" href="./catalog.html">В каталог</a>
+                <a class="button button--ghost" href="./cart.html">Открыть корзину</a>
+              </div>
+            </div>
+
+            <div class="status-banner" data-page-status>
+              Загружаем историю заказов...
+            </div>
+
+            <div class="orders__layout">
+              <section class="orders-list" data-orders-list></section>
+
+              <aside class="orders-side">
+                <article class="orders-side__summary">
+                  <p class="orders-side__summary-label">Текущий выбор</p>
+                  <p class="orders-side__summary-text" data-order-selection-summary>
+                    Как только список заказов загрузится, здесь появится краткая сводка по выбранной покупке.
+                  </p>
+                </article>
+
+                <div data-order-details>
+                  <article class="empty-state">
+                    <h2 class="empty-state__title">Выберите заказ</h2>
+                    <p class="empty-state__text">После выбора карточки справа появятся подробности покупки.</p>
+                  </article>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer" data-shell="footer"></footer>
+    </div>
+
+    <div class="toast-stack" data-toast-root aria-live="polite"></div>
+    <script type="module" src="./src/js/pages/orders.js"></script>
+  </body>
+</html>

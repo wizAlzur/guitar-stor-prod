@@ -26,6 +26,12 @@ type ApiKeyConfig struct {
 	Admin string
 }
 
+type FrontendConfig struct {
+	BaseURL            string
+	PaymentSuccessPath string
+	PaymentFailPath    string
+}
+
 type Config struct {
 	ServerPort  string
 	DatabaseURL string
@@ -33,6 +39,7 @@ type Config struct {
 	JWT         JWTConfig
 	YooKassa    YooKassaConfig
 	ApiKey      ApiKeyConfig
+	Frontend    FrontendConfig
 }
 
 func LoadConfig() (*Config, error) {
@@ -95,6 +102,21 @@ func LoadConfig() (*Config, error) {
 		return nil, fmt.Errorf("ADMIN_API_KEY is rquired for admin endpoints")
 	}
 
+	frontendURL := os.Getenv("FRONTEND_URL")
+	if frontendURL == "" {
+		frontendURL = "http://localhost:5173"
+	}
+
+	frontendSuccessPath := os.Getenv("FRONTEND_PAYMENT_SUCCESS_PATH")
+	if frontendSuccessPath == "" {
+		frontendSuccessPath = "/payment-success.html"
+	}
+
+	frontendFailPath := os.Getenv("FRONTEND_PAYMENT_FAIL_PATH")
+	if frontendFailPath == "" {
+		frontendFailPath = "/payment-fail.html"
+	}
+
 	return &Config{
 		ServerPort:  serverPort,
 		DatabaseURL: databaseURL,
@@ -112,6 +134,11 @@ func LoadConfig() (*Config, error) {
 		},
 		ApiKey: ApiKeyConfig{
 			Admin: adminApiKey,
+		},
+		Frontend: FrontendConfig{
+			BaseURL:            frontendURL,
+			PaymentSuccessPath: frontendSuccessPath,
+			PaymentFailPath:    frontendFailPath,
 		},
 	}, nil
 }

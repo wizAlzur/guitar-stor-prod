@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Корзина | Six Strings Store</title>
+    <link rel="stylesheet" href="./src/styles/main.css" />
+  </head>
+  <body class="page page--cart">
+    <div class="page__shell">
+      <header class="header" data-shell="header"></header>
+
+      <main class="page__main">
+        <section class="cart">
+          <div class="container">
+            <div class="cart__intro">
+              <p class="section-label">Корзина</p>
+              <h1 class="section-title">Ваш будущий заказ</h1>
+              <p class="section-text">
+                Здесь можно изменить количество товаров, очистить корзину и перейти к созданию заказа.
+                После оплаты пользователь возвращается на отдельный экран результата.
+              </p>
+            </div>
+
+            <div class="status-banner" data-page-status>
+              Загружаем содержимое корзины...
+            </div>
+
+            <div class="cart__layout">
+              <section class="cart-list" data-cart-list></section>
+
+              <aside class="order-summary">
+                <div class="status-banner status-banner--accent order-summary__status" data-cart-summary-status>
+                  Проверяем состав корзины и готовность к оформлению.
+                </div>
+
+                <h2 class="order-summary__title">Сводка заказа</h2>
+                <dl class="order-summary__list">
+                  <div class="order-summary__row">
+                    <dt>Товаров</dt>
+                    <dd data-cart-count>0</dd>
+                  </div>
+                  <div class="order-summary__row">
+                    <dt>Итого</dt>
+                    <dd data-cart-total>0 ₽</dd>
+                  </div>
+                </dl>
+
+                <div class="order-summary__actions">
+                  <button class="button button--ghost button--wide" type="button" data-cart-clear disabled>
+                    Очистить корзину
+                  </button>
+                  <button class="button button--primary button--wide" type="button" data-cart-checkout disabled>
+                    Перейти к оплате
+                  </button>
+                </div>
+
+                <div class="order-summary__links">
+                  <a class="button button--secondary button--wide" href="./catalog.html">Продолжить покупки</a>
+                  <a class="button button--ghost button--wide" href="./orders.html">История заказов</a>
+                </div>
+
+                <p class="order-summary__hint" data-cart-summary-hint>
+                  После создания заказа пользователь будет перенаправлен на оплату или в историю заказов.
+                </p>
+              </aside>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer" data-shell="footer"></footer>
+    </div>
+
+    <div class="toast-stack" data-toast-root aria-live="polite"></div>
+    <script type="module" src="./src/js/pages/cart.js"></script>
+  </body>
+</html>

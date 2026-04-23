@@ -1,0 +1,72 @@
+.catalog,
+.auth,
+.cart,
+.orders,
+.payment-result {
+  padding-top: 24px;
+}
+
+.catalog__intro,
+.cart__intro,
+.orders__intro,
+.auth__intro {
+  margin-bottom: 22px;
+}
+
+.catalog-toolbar {
+  display: grid;
+  gap: 14px;
+  margin: 22px 0;
+  padding: 18px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.48);
+  box-shadow: var(--shadow-card);
+}
+
+.catalog-toolbar__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.catalog-toolbar__meta {
+  display: grid;
+  gap: 8px;
+}
+
+.catalog-toolbar__summary {
+  font-weight: 700;
+}
+
+.catalog-toolbar__hint {
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+.catalog-grid {
+  display: grid;
+  gap: 18px;
+  margin-top: 24px;
+}
+
+@media (min-width: 768px) {
+  .catalog-toolbar {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+  }
+
+  .catalog-toolbar__meta {
+    grid-column: 1 / -1;
+  }
+
+  .catalog-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1120px) {
+  .catalog-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

@@ -1,0 +1,124 @@
+.auth__layout {
+  display: grid;
+  gap: 22px;
+}
+
+.auth__intro {
+  display: grid;
+  gap: 18px;
+  align-content: start;
+}
+
+.auth__summary {
+  padding: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  border-radius: var(--radius-xl);
+  background: rgba(255, 255, 255, 0.52);
+  box-shadow: var(--shadow-card);
+}
+
+.auth__summary-label {
+  margin-bottom: 14px;
+  color: var(--color-accent-strong);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.auth-card {
+  padding: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-soft);
+}
+
+.auth-tabs {
+  display: inline-flex;
+  gap: 8px;
+  padding: 6px;
+  border-radius: 999px;
+  background: rgba(46, 58, 51, 0.08);
+}
+
+.auth-tabs__button {
+  min-height: 42px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-weight: 700;
+}
+
+.auth-tabs__button--active {
+  background: #fff;
+  color: var(--color-accent-strong);
+  box-shadow: var(--shadow-card);
+}
+
+.auth-form {
+  display: grid;
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.auth-form__redirect {
+  margin-top: 18px;
+  padding: 12px 14px;
+  border: 1px dashed rgba(46, 58, 51, 0.18);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.46);
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+.auth-form__hint {
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+.auth-form__feedback {
+  padding: 12px 14px;
+  border: 1px solid rgba(46, 58, 51, 0.12);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.6);
+  line-height: 1.6;
+}
+
+.auth-form__feedback--success {
+  border-color: rgba(35, 107, 71, 0.18);
+  background: rgba(237, 251, 244, 0.9);
+  color: var(--color-success);
+}
+
+.auth-form__feedback--error {
+  border-color: rgba(146, 56, 51, 0.22);
+  background: rgba(255, 241, 241, 0.9);
+  color: var(--color-danger);
+}
+
+@media (max-width: 560px) {
+  .auth__summary,
+  .auth-card {
+    padding: 20px 18px;
+  }
+
+  .auth-tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  .auth-tabs__button {
+    width: 100%;
+  }
+}
+
+@media (min-width: 980px) {
+  .auth__layout {
+    grid-template-columns: 1fr minmax(360px, 480px);
+    align-items: start;
+  }
+}

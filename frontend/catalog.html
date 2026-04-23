@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Каталог | Six Strings Store</title>
+    <link rel="stylesheet" href="./src/styles/main.css" />
+  </head>
+  <body class="page page--catalog">
+    <div class="page__shell">
+      <header class="header" data-shell="header"></header>
+
+      <main class="page__main">
+        <section class="catalog">
+          <div class="container">
+            <div class="catalog__intro">
+              <p class="section-label">Каталог</p>
+              <h1 class="section-title">Гитары для сцены, студии и дома</h1>
+              <p class="section-text">
+                Каталог загружается из API и сразу позволяет перейти к реальному пользовательскому
+                сценарию: найти товар, добавить его в корзину и оформить заказ.
+              </p>
+            </div>
+
+            <form class="catalog-toolbar" data-catalog-toolbar>
+              <label class="form-field">
+                <span class="form-field__label">Поиск по названию и описанию</span>
+                <input
+                  class="form-field__input"
+                  data-catalog-search
+                  type="search"
+                  placeholder="Например, Stratocaster"
+                />
+              </label>
+
+              <div class="catalog-toolbar__actions">
+                <button class="button button--ghost" data-catalog-clear type="button" disabled>
+                  Очистить поиск
+                </button>
+                <a class="button button--secondary" href="./cart.html">Открыть корзину</a>
+              </div>
+
+              <div class="catalog-toolbar__meta">
+                <p class="catalog-toolbar__summary" data-catalog-summary>
+                  Готовим каталог к загрузке...
+                </p>
+                <p class="catalog-toolbar__hint" data-catalog-auth-hint>
+                  После входа можно сразу добавлять товары в корзину.
+                </p>
+              </div>
+            </form>
+
+            <div class="status-banner" data-page-status>
+              Загружаем товары из API...
+            </div>
+
+            <section class="catalog-grid" data-catalog-grid></section>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer" data-shell="footer"></footer>
+    </div>
+
+    <div class="toast-stack" data-toast-root aria-live="polite"></div>
+    <script type="module" src="./src/js/pages/catalog.js"></script>
+  </body>
+</html>

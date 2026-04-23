@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Six Strings Store</title>
+    <link rel="stylesheet" href="./src/styles/main.css" />
+  </head>
+  <body class="page page--home">
+    <div class="page__shell">
+      <header class="header" data-shell="header"></header>
+
+      <main class="page__main">
+        <section class="hero">
+          <div class="container hero__layout">
+            <div class="hero__content">
+              <p class="hero__eyebrow">Курсовой проект по frontend-разработке</p>
+              <h1 class="hero__title">Интернет-магазин гитар с живым каталогом, корзиной и оплатой</h1>
+              <p class="hero__text">
+                Клиентская часть уже работает с Go API: можно просматривать товары, регистрироваться,
+                собирать корзину, оформлять заказ и возвращаться после оплаты на понятный результат.
+              </p>
+              <div class="hero__actions">
+                <a class="button button--primary" href="./catalog.html">Смотреть каталог</a>
+                <a class="button button--ghost" data-home-secondary-action href="./auth.html">Войти в аккаунт</a>
+              </div>
+
+              <div class="hero__facts">
+                <article class="hero__fact">
+                  <strong class="hero__fact-value">7</strong>
+                  <span class="hero__fact-label">страниц фронтенда</span>
+                </article>
+                <article class="hero__fact">
+                  <strong class="hero__fact-value">JWT</strong>
+                  <span class="hero__fact-label">авторизация пользователя</span>
+                </article>
+                <article class="hero__fact">
+                  <strong class="hero__fact-value">API</strong>
+                  <span class="hero__fact-label">каталог, корзина и заказы</span>
+                </article>
+              </div>
+            </div>
+
+            <div class="hero__panel">
+              <div class="status-banner status-banner--accent" data-page-status>
+                Продукт готов к демонстрации основных пользовательских сценариев.
+              </div>
+
+              <div class="hero__stack">
+                <article class="hero__card">
+                  <p class="hero__card-label">Что уже работает</p>
+                  <ul class="feature-list">
+                    <li class="feature-list__item">Каталог товаров с поиском и реальной загрузкой из API</li>
+                    <li class="feature-list__item">Регистрация, вход и защищенные пользовательские сценарии</li>
+                    <li class="feature-list__item">Корзина, оформление заказа и история заказов</li>
+                    <li class="feature-list__item">Возврат после оплаты с проверкой фактического статуса</li>
+                  </ul>
+                </article>
+
+                <article class="hero__card">
+                  <p class="hero__card-label">Сценарий защиты</p>
+                  <ol class="hero__steps">
+                    <li class="hero__step">Открыть каталог и показать живые товары</li>
+                    <li class="hero__step">Войти в аккаунт и добавить товары в корзину</li>
+                    <li class="hero__step">Создать заказ и перейти к оплате</li>
+                    <li class="hero__step">Показать заказ и экран результата платежа</li>
+                  </ol>
+                </article>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer" data-shell="footer"></footer>
+    </div>
+
+    <div class="toast-stack" data-toast-root aria-live="polite"></div>
+    <script type="module" src="./src/js/pages/home.js"></script>
+  </body>
+</html>

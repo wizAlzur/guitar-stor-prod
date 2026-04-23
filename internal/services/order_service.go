@@ -131,9 +131,27 @@ func (s *orderService) CreateOrder(ctx context.Context, userID int64) (*models.C
 		log.Printf("warning: failed to clear cart for user %d: %v", userID, err)
 	}
 
-	paymentURL, err := s.paymentSvc.CreatePayment(ctx, order)
+	var paymentURL string
+	paymentResult, err := s.paymentSvc.CreatePayment(ctx, order)
 	if err != nil {
 		log.Printf("warning: failed to create payment for order %d: %v", order.ID, err)
+	} else {
+		paymentURL = paymentResult.ConfirmationURL
+		order.PaymentID = paymentResult.PaymentID
+
+		if order.PaymentID != "" {
+			if err := s.orderRepo.UpdateOrderPaymentID(ctx, order.ID, order.PaymentID); err != nil {
+				log.Printf("warning: failed to save payment id for order %d: %v", order.ID, err)
+			}
+		}
+
+		if syncedStatus := mapYooKassaStatusToOrderStatus(paymentResult.Status); syncedStatus != "" && syncedStatus != order.Status {
+			if err := s.orderRepo.UpdateOrderStatus(ctx, order.ID, syncedStatus); err != nil {
+				log.Printf("warning: failed to apply initial payment status for order %d: %v", order.ID, err)
+			} else {
+				order.Status = syncedStatus
+			}
+		}
 	}
 
 	return &models.CreateOrderResponse{
@@ -146,13 +164,81 @@ func (s *orderService) CreateOrder(ctx context.Context, userID int64) (*models.C
 }
 
 func (s *orderService) ListOrders(ctx context.Context, userID int64) ([]*models.OrderResponse, error) {
-	return s.orderRepo.ListOrders(ctx, userID)
+	orders, err := s.orderRepo.ListOrders(ctx, userID)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, order := range orders {
+		if _, err := s.syncOrderStatusFromPayment(ctx, order); err != nil {
+			log.Printf("warning: failed to sync order %d payment status: %v", order.ID, err)
+		}
+	}
+
+	return orders, nil
 }
 
 func (s *orderService) GetOrderByID(ctx context.Context, orderID int64, userID int64) (*models.OrderResponse, error) {
-	return s.orderRepo.GetOrderByID(ctx, orderID, userID)
+	order, err := s.orderRepo.GetOrderByID(ctx, orderID, userID)
+	if err != nil {
+		return nil, err
+	}
+
+	changed, err := s.syncOrderStatusFromPayment(ctx, order)
+	if err != nil {
+		log.Printf("warning: failed to sync order %d payment status: %v", orderID, err)
+		return order, nil
+	}
+
+	if !changed {
+		return order, nil
+	}
+
+	updatedOrder, err := s.orderRepo.GetOrderByID(ctx, orderID, userID)
+	if err != nil {
+		log.Printf("warning: failed to reload order %d after status sync: %v", orderID, err)
+		return order, nil
+	}
+
+	return updatedOrder, nil
 }
 
 func (s *orderService) UpdateOrderStatus(ctx context.Context, orderID int64, newStatus string) error {
 	return s.orderRepo.UpdateOrderStatus(ctx, orderID, newStatus)
+}
+
+func (s *orderService) syncOrderStatusFromPayment(ctx context.Context, order *models.OrderResponse) (bool, error) {
+	if order == nil || order.Status != "pending" || order.PaymentID == "" {
+		return false, nil
+	}
+
+	paymentStatus, err := s.paymentSvc.GetPaymentStatus(ctx, order.PaymentID)
+	if err != nil {
+		return false, err
+	}
+
+	newStatus := mapYooKassaStatusToOrderStatus(paymentStatus)
+	if newStatus == "" || newStatus == order.Status {
+		return false, nil
+	}
+
+	if err := s.orderRepo.UpdateOrderStatus(ctx, order.ID, newStatus); err != nil {
+		return false, err
+	}
+
+	order.Status = newStatus
+	return true, nil
+}
+
+func mapYooKassaStatusToOrderStatus(status string) string {
+	switch status {
+	case "succeeded":
+		return "paid"
+	case "canceled":
+		return "canceled"
+	case "pending", "waiting_for_capture":
+		return "pending"
+	default:
+		return ""
+	}
 }

@@ -1,0 +1,21 @@
+.status-banner {
+  margin-top: 18px;
+  padding: 14px 16px;
+  border: 1px solid rgba(46, 58, 51, 0.1);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.56);
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+.status-banner--accent {
+  border-color: rgba(166, 75, 42, 0.18);
+  background: rgba(255, 246, 238, 0.8);
+  color: var(--color-accent-strong);
+}
+
+@media (max-width: 560px) {
+  .status-banner {
+    padding: 12px 14px;
+  }
+}

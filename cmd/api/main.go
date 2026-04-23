@@ -61,14 +61,14 @@ func main() {
 	productHandler := handlers.NewProductHandler(productService)
 	cartHandler := handlers.NewCartHandler(cartService)
 	authHandler := handlers.NewAuthHandler(authService)
-	orderHandler := handlers.NewOrderHandler(orderService)
+	orderHandler := handlers.NewOrderHandler(orderService, cfg.Frontend)
 	paymentHandler := handlers.NewPaymentHandler(orderService)
 
 	//Middleware
 	authMiddleware := middlewares.Auth(authService)
 
 	// Роутер
-	router := server.NewRouter(cfg.ApiKey, productHandler, cartHandler, authHandler, authMiddleware, orderHandler, paymentHandler)
+	router := server.NewRouter(cfg.ApiKey, cfg.Frontend, productHandler, cartHandler, authHandler, authMiddleware, orderHandler, paymentHandler)
 
 	// Сервер
 	srv := &http.Server{

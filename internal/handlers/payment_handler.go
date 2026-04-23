@@ -7,6 +7,7 @@ import (
 	"net"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"ecommerce-api/internal/services"
 
@@ -108,11 +109,16 @@ func isIPAllowed(ipStr string, cidrs []string) bool {
 	}
 
 	for _, cidr := range cidrs {
-		_, network, err := net.ParseCIDR(cidr)
-		if err != nil {
+		if strings.Contains(cidr, "/") {
+			_, network, err := net.ParseCIDR(cidr)
+			if err == nil && network.Contains(ip) {
+				return true
+			}
 			continue
 		}
-		if network.Contains(ip) {
+
+		allowedIP := net.ParseIP(cidr)
+		if allowedIP != nil && allowedIP.Equal(ip) {
 			return true
 		}
 	}

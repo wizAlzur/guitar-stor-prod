@@ -1,20 +1,28 @@
 package handlers
 
 import (
-	"ecommerce-api/internal/services"
 	"net/http"
+	"net/url"
 	"strconv"
+	"strings"
+
+	"ecommerce-api/internal/config"
+	"ecommerce-api/internal/services"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5"
 )
 
 type OrderHandler struct {
-	service services.OrderService
+	service  services.OrderService
+	frontend config.FrontendConfig
 }
 
-func NewOrderHandler(service services.OrderService) *OrderHandler {
-	return &OrderHandler{service: service}
+func NewOrderHandler(service services.OrderService, frontend config.FrontendConfig) *OrderHandler {
+	return &OrderHandler{
+		service:  service,
+		frontend: frontend,
+	}
 }
 
 func (h *OrderHandler) CreateOrder(c *gin.Context) {
@@ -66,12 +74,13 @@ func (h *OrderHandler) GetOrder(c *gin.Context) {
 	}
 
 	ctx := c.Request.Context()
-	order, err := h.service.GetOrderByID(ctx, orderID, userID) // реализуй в сервисе позже
+	order, err := h.service.GetOrderByID(ctx, orderID, userID)
 	if err != nil {
 		if err == pgx.ErrNoRows {
 			c.JSON(http.StatusNotFound, gin.H{"error": "order not found"})
 			return
 		}
+
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
@@ -80,9 +89,27 @@ func (h *OrderHandler) GetOrder(c *gin.Context) {
 }
 
 func (h *OrderHandler) PaymentSuccess(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{"message": "Оплата прошла успешно. Заказ в обработке."})
+	c.Redirect(http.StatusFound, h.buildFrontendRedirectURL(c, h.frontend.PaymentSuccessPath))
 }
 
 func (h *OrderHandler) PaymentFail(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{"message": "Оплата не удалась. Попробуйте снова или свяжитесь с поддержкой."})
+	c.Redirect(http.StatusFound, h.buildFrontendRedirectURL(c, h.frontend.PaymentFailPath))
+}
+
+func (h *OrderHandler) buildFrontendRedirectURL(c *gin.Context, path string) string {
+	target := strings.TrimRight(h.frontend.BaseURL, "/")
+	relativePath := strings.TrimLeft(path, "/")
+	if relativePath != "" {
+		target += "/" + relativePath
+	}
+
+	if query := c.Request.URL.RawQuery; query != "" {
+		target += "?" + query
+	}
+
+	if _, err := url.ParseRequestURI(target); err != nil {
+		return h.frontend.BaseURL
+	}
+
+	return target
 }

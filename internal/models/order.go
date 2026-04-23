@@ -7,6 +7,7 @@ type Order struct {
 	UserID      int64     `json:"user_id"`
 	Status      string    `json:"status"`
 	TotalAmount float64   `json:"total_amount"`
+	PaymentID   string    `json:"-"`
 	CreatedAt   time.Time `json:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at"`
 }
@@ -32,6 +33,7 @@ type OrderResponse struct {
 	ID          int64               `json:"id"`
 	Status      string              `json:"status"`
 	TotalAmount float64             `json:"total_amount"`
+	PaymentID   string              `json:"-"`
 	Items       []OrderResponseItem `json:"items"`
 	CreatedAt   time.Time           `json:"created_at"`
 	UpdatedAt   time.Time           `json:"updated_at"`

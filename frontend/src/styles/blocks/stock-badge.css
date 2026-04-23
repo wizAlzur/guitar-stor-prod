@@ -1,0 +1,24 @@
+.stock-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.stock-badge--available {
+  background: rgba(35, 107, 71, 0.12);
+  color: var(--color-success);
+}
+
+.stock-badge--warning {
+  background: rgba(166, 75, 42, 0.12);
+  color: var(--color-accent-strong);
+}
+
+.stock-badge--empty {
+  background: rgba(146, 56, 51, 0.12);
+  color: var(--color-danger);
+}

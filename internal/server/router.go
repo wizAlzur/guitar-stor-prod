@@ -4,12 +4,14 @@ import (
 	"ecommerce-api/internal/config"
 	"ecommerce-api/internal/handlers"
 	"ecommerce-api/internal/middlewares"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 func NewRouter(
 	apiKeyConfig config.ApiKeyConfig,
+	frontendConfig config.FrontendConfig,
 	productHandler *handlers.ProductHandler,
 	cartHandler *handlers.CartHandler,
 	authHandler *handlers.AuthHandler,
@@ -18,11 +20,16 @@ func NewRouter(
 	paymentHandler *handlers.PaymentHandler,
 ) *gin.Engine {
 	r := gin.Default()
+	r.Use(middlewares.CORS(frontendConfig.BaseURL))
+	r.GET("/health", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"status": "ok"})
+	})
 
 	r.POST("/register", authHandler.Register)
 	r.POST("/login", authHandler.Login)
 
 	r.POST("/products", middlewares.ApiKeyMiddleware(apiKeyConfig.Admin), productHandler.Create)
+	r.PATCH("/products/:id", middlewares.ApiKeyMiddleware(apiKeyConfig.Admin), productHandler.Update)
 	r.GET("/products", productHandler.List)
 
 	r.GET("/success", orderHandler.PaymentSuccess)

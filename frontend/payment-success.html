@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Оплата прошла успешно | Six Strings Store</title>
+    <link rel="stylesheet" href="./src/styles/main.css" />
+  </head>
+  <body class="page page--payment-success">
+    <div class="page__shell">
+      <header class="header" data-shell="header"></header>
+
+      <main class="page__main">
+        <section class="payment-result payment-result--success" data-payment-root>
+          <div class="container payment-result__wrap">
+            <p class="section-label">Оплата</p>
+            <h1 class="section-title" data-payment-title>Проверяем статус платежа</h1>
+            <p class="section-text" data-payment-message>
+              Возврат со страницы оплаты получен. Сейчас подтянем фактический статус заказа из API.
+            </p>
+            <p class="payment-result__badge order-card__status order-card__status--pending" data-payment-badge>
+              Статус уточняется
+            </p>
+            <dl class="payment-result__meta" data-payment-meta hidden></dl>
+            <div class="status-banner status-banner--accent" data-page-status>
+              Получаем актуальные данные по заказу...
+            </div>
+            <div class="payment-result__actions">
+              <a class="button button--primary" data-payment-primary href="./orders.html">К заказам</a>
+              <a class="button button--ghost" data-payment-secondary href="./catalog.html">В каталог</a>
+            </div>
+            <article class="payment-result__support">
+              <p class="payment-result__support-label" data-payment-support-title>Что дальше</p>
+              <p class="payment-result__support-text" data-payment-support-text>
+                После проверки статуса страница подскажет, какой следующий шаг логичнее для пользователя.
+              </p>
+              <ul class="payment-result__support-list" data-payment-support-list></ul>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer" data-shell="footer"></footer>
+    </div>
+
+    <div class="toast-stack" data-toast-root aria-live="polite"></div>
+    <script type="module" src="./src/js/pages/payment-success.js"></script>
+  </body>
+</html>

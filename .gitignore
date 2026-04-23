@@ -12,6 +12,8 @@ vendor/
 .env
 .env.local
 .env.*
+!frontend/.env.example
+!frontend/.env.production.example
 *.key
 *.pem
 *.crt
@@ -38,3 +40,7 @@ temp/
 
 # Docker
 docker-compose.override.yml
+
+# Frontend
+frontend/node_modules/
+frontend/dist/

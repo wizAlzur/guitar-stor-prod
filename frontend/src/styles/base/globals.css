@@ -1,0 +1,111 @@
+body {
+  font-family: var(--font-body);
+  color: var(--color-text);
+  background:
+    radial-gradient(circle at top left, rgba(214, 150, 98, 0.28), transparent 30%),
+    radial-gradient(circle at top right, rgba(69, 79, 66, 0.2), transparent 28%),
+    linear-gradient(180deg, #f6f0e7 0%, #ede1d2 100%);
+}
+
+.container {
+  width: min(100% - 32px, var(--container-width));
+  margin: 0 auto;
+}
+
+.section-label {
+  margin-bottom: 10px;
+  color: var(--color-accent-strong);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.8rem);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+}
+
+.section-text {
+  margin-top: 14px;
+  max-width: 720px;
+  color: var(--color-text-muted);
+  line-height: 1.7;
+}
+
+.price-tag {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.feature-list {
+  display: grid;
+  gap: 12px;
+}
+
+.feature-list__item {
+  padding: 16px 18px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.46);
+  box-shadow: var(--shadow-card);
+}
+
+.toast-stack {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 30;
+  display: grid;
+  gap: 10px;
+}
+
+.toast {
+  transform: translateY(12px);
+  opacity: 0;
+  max-width: 360px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(36, 25, 16, 0.92);
+  color: #fff;
+  line-height: 1.5;
+  box-shadow: var(--shadow-card);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.toast--visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+@media (max-width: 640px) {
+  .container {
+    width: min(100% - 24px, var(--container-width));
+  }
+
+  .toast-stack {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+  }
+
+  .toast {
+    width: 100%;
+    max-width: none;
+  }
+
+  .hero__actions .button,
+  .empty-state__actions .button,
+  .catalog-toolbar__actions .button,
+  .orders__actions .button,
+  .order-summary__actions .button,
+  .order-summary__links .button,
+  .order-details__actions .button,
+  .payment-result__actions .button,
+  .user-panel__group .button {
+    width: 100%;
+  }
+}

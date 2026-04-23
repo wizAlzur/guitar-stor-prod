@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strconv"
 	"time"
@@ -21,6 +22,8 @@ type cartRepository struct {
 	rdb *redis.Client
 }
 
+var ErrCartStorageUnavailable = errors.New("cart storage is unavailable")
+
 func NewCartRepository(rdb *redis.Client) CartRepository {
 	return &cartRepository{rdb: rdb}
 }
@@ -30,10 +33,18 @@ func (r *cartRepository) getCartKey(userID int64) string {
 }
 
 func (r *cartRepository) setTTL(ctx context.Context, key string) error {
+	if err := r.ensureClient(); err != nil {
+		return err
+	}
+
 	return r.rdb.Expire(ctx, key, 7*24*time.Hour).Err()
 }
 
 func (r *cartRepository) AddItem(ctx context.Context, userID int64, productID int64, quantity int) error {
+	if err := r.ensureClient(); err != nil {
+		return err
+	}
+
 	key := r.getCartKey(userID)
 	field := strconv.Itoa(int(productID))
 
@@ -44,6 +55,10 @@ func (r *cartRepository) AddItem(ctx context.Context, userID int64, productID in
 }
 
 func (r *cartRepository) UpdateItem(ctx context.Context, userID int64, productID int64, quantity int) error {
+	if err := r.ensureClient(); err != nil {
+		return err
+	}
+
 	key := r.getCartKey(userID)
 	field := strconv.Itoa(int(productID))
 	if quantity <= 0 {
@@ -58,6 +73,10 @@ func (r *cartRepository) UpdateItem(ctx context.Context, userID int64, productID
 }
 
 func (r *cartRepository) RemoveItem(ctx context.Context, userID int64, productID int64) error {
+	if err := r.ensureClient(); err != nil {
+		return err
+	}
+
 	key := r.getCartKey(userID)
 	field := strconv.Itoa(int(productID))
 	if err := r.rdb.HDel(ctx, key, field).Err(); err != nil {
@@ -68,6 +87,10 @@ func (r *cartRepository) RemoveItem(ctx context.Context, userID int64, productID
 }
 
 func (r *cartRepository) GetCart(ctx context.Context, userID int64) (map[int64]int, error) {
+	if err := r.ensureClient(); err != nil {
+		return nil, err
+	}
+
 	key := r.getCartKey(userID)
 	data, err := r.rdb.HGetAll(ctx, key).Result()
 	if err != nil {
@@ -90,6 +113,18 @@ func (r *cartRepository) GetCart(ctx context.Context, userID int64) (map[int64]i
 }
 
 func (r *cartRepository) ClearCart(ctx context.Context, userID int64) error {
+	if err := r.ensureClient(); err != nil {
+		return err
+	}
+
 	key := r.getCartKey(userID)
 	return r.rdb.Del(ctx, key).Err()
+}
+
+func (r *cartRepository) ensureClient() error {
+	if r == nil || r.rdb == nil {
+		return ErrCartStorageUnavailable
+	}
+
+	return nil
 }
