@@ -331,6 +331,7 @@ class AuthPage extends BasePage {
     }
 
     const key = this.getFieldKey(input);
+    input.setCustomValidity("");
     const message = this.getFieldErrorMessage(input);
     input.setCustomValidity(message);
     input.setAttribute("aria-invalid", String(Boolean(message)));
