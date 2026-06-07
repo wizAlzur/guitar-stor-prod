@@ -2,11 +2,14 @@ package middlewares
 
 import (
 	"net/http"
+	"net/url"
 
 	"github.com/gin-gonic/gin"
 )
 
 func CORS(allowedOrigin string) gin.HandlerFunc {
+	allowedOrigin = normalizeAllowedOrigin(allowedOrigin)
+
 	return func(c *gin.Context) {
 		origin := c.GetHeader("Origin")
 		if origin == "" || origin != allowedOrigin {
@@ -28,4 +31,13 @@ func CORS(allowedOrigin string) gin.HandlerFunc {
 
 		c.Next()
 	}
+}
+
+func normalizeAllowedOrigin(value string) string {
+	parsedURL, err := url.Parse(value)
+	if err != nil || parsedURL.Scheme == "" || parsedURL.Host == "" {
+		return value
+	}
+
+	return parsedURL.Scheme + "://" + parsedURL.Host
 }
